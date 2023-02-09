@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "585603149392",
+    "project_id": "mototaxapp-5126c",
+    "storage_bucket": "mototaxapp-5126c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585603149392:android:a7ff8a022a891e8860ab55",
+        "android_client_info": {
+          "package_name": "com.rockstone.mototaxapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585603149392-3opinnio7lokt7dstl3hh494junun66m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCamhfF0lV_csyLNRwDNSJDNipHIBqgrUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585603149392-3opinnio7lokt7dstl3hh494junun66m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585603149392:android:269682bd1d27b05060ab55",
+        "android_client_info": {
+          "package_name": "com.rockstone.mototaxappdriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585603149392-3opinnio7lokt7dstl3hh494junun66m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCamhfF0lV_csyLNRwDNSJDNipHIBqgrUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585603149392-3opinnio7lokt7dstl3hh494junun66m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
