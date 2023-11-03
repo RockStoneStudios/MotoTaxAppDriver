@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import com.example.easywaylocation.EasyWayLocation
 import com.example.easywaylocation.Listener
 import com.google.android.gms.location.LocationRequest
@@ -71,11 +72,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, Listener, SensorEve
 
         override fun onFinish() {
             Log.d("TIMER", "ON FINISH")
-            modalBooking.dismiss()
+            if (modalBooking.isAdded) {
+                modalBooking.dismiss()
+            }
         }
-
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,7 +153,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, Listener, SensorEve
         }
     }
     private fun showModalBooking(booking: Booking) {
-        if (booking != null && booking.status == "create") {
+        if (booking != null  && booking.status == "create") {
             // Comprobar si el objeto modalBooking es nulo
             if (modalBooking != null) {
                 val bundle = Bundle()
@@ -160,7 +161,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, Listener, SensorEve
                 modalBooking.arguments = bundle
 
                 // Mostrar el modal bottom sheet
+
                 modalBooking.show(supportFragmentManager, ModalBottomSheetBooking.TAG)
+
             }
         }
 
@@ -423,6 +426,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, Listener, SensorEve
     override fun onPause() {
         super.onPause()
         stopSensor()
+        timer.cancel()
     }
 
 }
