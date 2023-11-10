@@ -63,7 +63,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, Listener, SensorEve
     private var declination = 0.0f
     private var isFirstTimeOnResume = false
     private var isFirstLocation = false
-
+    private var isActivityVisible = false
 
     val timer = object: CountDownTimer(30000, 1000) {
         override fun onTick(counter: Long) {
@@ -148,60 +148,36 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, Listener, SensorEve
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (outState.isEmpty) {
-            // Work-around for a pre-Android 4.2 bug
             outState.putBoolean("bug:fix", true)
         }
     }
     private fun showModalBooking(booking: Booking) {
-        if (booking != null  && booking.status == "create") {
-            // Comprobar si el objeto modalBooking es nulo
-            if (modalBooking != null) {
-                val bundle = Bundle()
-                bundle.putString("booking", booking.toJson())
-                modalBooking.arguments = bundle
-
-                // Mostrar el modal bottom sheet
-
-                modalBooking.show(supportFragmentManager, ModalBottomSheetBooking.TAG)
-
-            }
+        if (isActivityVisible && booking.status == "create") {
+            val bundle = Bundle()
+            bundle.putString("booking", booking.toJson())
+            modalBooking.arguments = bundle
+            modalBooking.show(supportFragmentManager, ModalBottomSheetBooking.TAG)
         }
-
         timer.start()
     }
 
     private fun listenerBooking() {
         bookingListener = bookingProvider.getBooking().addSnapshotListener { snapshot, e ->
             if (e != null) {
-                Log.d("FIRESTORE", "ERROR: ${e.message}")
+                Log.d("FIRESTORE", "Error: ${e.message}")
                 return@addSnapshotListener
             }
 
-            if (snapshot != null) {
-                if (snapshot.documents.size > 0) {
-                    val booking = snapshot.documents[0].toObject(Booking::class.java)
-
-                    // Comprobar si el objeto booking es nulo
-                    if (booking != null) {
-                        // Agrega un log antes de la línea `booking?.let { booking -> if (booking.status == "create") { showModalBooking(booking) } }`
-                        Log.d("LOG", "booking != null")
-
-                        // Ejecutar el código del bloque `let()`
-                        booking?.let { booking ->
-                            // Agrega un log dentro del bloque `let()`
-                            Log.d("LOG", "booking != null inside let")
-
-                            if (booking.status == "create") {
-                                showModalBooking(booking)
-                            }
-                        }
+            if (snapshot != null && snapshot.documents.size > 0) {
+                val booking = snapshot.documents[0].toObject(Booking::class.java)
+                booking?.let { b ->
+                    if (b.status == "create") {
+                        showModalBooking(b)
                     }
                 }
             }
         }
     }
-
-
 
     private fun checkIfDriverIsConnected() {
         geoProvider.getLocation(authProvider.getId()).addOnSuccessListener { document ->
@@ -414,17 +390,18 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, Listener, SensorEve
     }
 
     override fun onResume() {
-        super.onResume() // ABRIMOS LA PANTALLA ACTUAL
+        super.onResume()
+        isActivityVisible = true
         if (!isFirstTimeOnResume) {
             isFirstTimeOnResume = true
-        }
-        else {
+        } else {
             startSensor()
         }
     }
 
     override fun onPause() {
         super.onPause()
+        isActivityVisible = false
         stopSensor()
         timer.cancel()
     }
